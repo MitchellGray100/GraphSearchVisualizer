@@ -31,7 +31,7 @@ public class Main extends Application {
 	private Button[] buttonArray = new Button[8];
 	private Scene scene;
 	private int speed = 0;
-	private State state;
+	private State state = State.CLEARGRID;
 	private GridPane largeGrid = new GridPane();
 
 	private enum State {
@@ -86,6 +86,13 @@ public class Main extends Application {
 		VBox bottom = new VBox();
 
 		Slider slide = new Slider();
+		slide.setOnMouseEntered(event -> {
+			tempCursor = scene.getCursor();
+			scene.setCursor(Cursor.HAND);
+		});
+		slide.setOnMouseExited(event -> {
+			scene.setCursor(tempCursor);
+		});
 		slide.setShowTickLabels(true);
 		slide.setShowTickMarks(true);
 		slide.setBlockIncrement(5);
@@ -236,6 +243,14 @@ public class Main extends Application {
 			border.setFill(color);
 			border.setStroke(Color.BLACK);
 			this.getChildren().add(border);
+
+			this.setOnMouseEntered(event -> {
+				tempCursor = scene.getCursor();
+				scene.setCursor(Cursor.CROSSHAIR);
+			});
+			this.setOnMouseExited(event -> {
+				scene.setCursor(tempCursor);
+			});
 
 			setOnMouseReleased(event -> {
 				switch (state) {
