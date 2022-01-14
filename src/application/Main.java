@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 
 import controller.ControllerImpl;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -36,6 +37,9 @@ public class Main extends Application {
 	private State state = State.CLEARGRID;
 	private GridPane largeGrid = new GridPane();
 	private ArrayList<model.Node> list = new ArrayList<model.Node>();
+	private AnimationTimer animationTimer;
+	private double time = 0;
+	private boolean stop = false;
 
 	private enum State {
 		CLEARGRID, PLACESTARTSQUARE, PLACEENDINGSQUARE, PLACEWALL, REMOVEWALL, BFS, DFS, ASTAR;
@@ -202,12 +206,14 @@ public class Main extends Application {
 					if (controller.isReadyToSearch()) {
 						controller.generateEdges();
 						list = controller.aStar();
+						animate(State.ASTAR);
 					}
 					break;
 				case BFS:
 					if (controller.isReadyToSearch()) {
 						controller.generateEdges();
 						list = controller.bfs();
+						animate(State.BFS);
 					}
 					break;
 				case CLEARGRID:
@@ -218,6 +224,7 @@ public class Main extends Application {
 					if (controller.isReadyToSearch()) {
 						controller.generateEdges();
 						list = controller.dfs();
+						animate(State.DFS);
 					}
 					break;
 				case PLACEENDINGSQUARE:
@@ -353,5 +360,77 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+	public void animate(State state) {
+		animationTimer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+
+				update(state);
+				if (stop || list.size() == 0) {
+					stop = false;
+					stop();
+				}
+
+			}
+		};
+		animationTimer.start();
+
+	}
+
+	protected void update(State state) {
+		if (state != this.state) {
+			removeColors();
+			stop = true;
+		}
+
+		time += 0.01 * speed;
+
+		System.out.println(time);
+		if (time >= 1) {
+			time = 0;
+			if (list.size() != 0)
+				colorOneSquare();
+		}
+	}
+
+	private void colorOneSquare() {
+
+		System.out.println(3);
+		for (Node tile : largeGrid.getChildren()) {
+			if (((Tile) tile).r == list.get(0).getColumn() && ((Tile) tile).c == list.get(0).getRow()) {
+				((Tile) tile).color = Color.PURPLE;
+				((Tile) tile).border.setFill(Color.PURPLE);
+				list.remove(0);
+				changeColors();
+				break;
+			}
+		}
+
+	}
+
+	private void changeColors() {
+		for (Node tile : largeGrid.getChildren()) {
+			if (((Tile) tile).r == list.get(0).getColumn() && ((Tile) tile).c == list.get(0).getRow()) {
+				((Tile) tile).color = Color.PURPLE;
+				((Tile) tile).border.setFill(Color.PURPLE);
+				list.remove(0);
+				changeColors();
+				break;
+			}
+		}
+
+	}
+
+	private void removeColors() {
+		for (Node tile : largeGrid.getChildren()) {
+			if (((Tile) tile).color != Color.LIME && ((Tile) tile).color != Color.RED
+					&& ((Tile) tile).color != Color.GRAY) {
+				((Tile) tile).color = Color.WHITE;
+				((Tile) tile).border.setFill(Color.WHITE);
+			}
+		}
+
 	}
 }

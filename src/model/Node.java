@@ -6,6 +6,23 @@ import java.util.Iterator;
 public class Node {
 	HashSet<Node> edges = new HashSet<Node>();
 	int row = -1;
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
 	int column = -1;
 	boolean isRock = false;
 
