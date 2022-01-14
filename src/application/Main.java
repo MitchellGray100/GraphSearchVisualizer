@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 import controller.ControllerImpl;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -33,6 +35,7 @@ public class Main extends Application {
 	private int speed = 0;
 	private State state = State.CLEARGRID;
 	private GridPane largeGrid = new GridPane();
+	private ArrayList<model.Node> list = new ArrayList<model.Node>();
 
 	private enum State {
 		CLEARGRID, PLACESTARTSQUARE, PLACEENDINGSQUARE, PLACEWALL, REMOVEWALL, BFS, DFS, ASTAR;
@@ -196,14 +199,26 @@ public class Main extends Application {
 				setButtonStates(this);
 				switch (state) {
 				case ASTAR:
+					if (controller.isReadyToSearch()) {
+						controller.generateEdges();
+						list = controller.aStar();
+					}
 					break;
 				case BFS:
+					if (controller.isReadyToSearch()) {
+						controller.generateEdges();
+						list = controller.bfs();
+					}
 					break;
 				case CLEARGRID:
 					controller.clear();
 					clearGrid(largeGrid);
 					break;
 				case DFS:
+					if (controller.isReadyToSearch()) {
+						controller.generateEdges();
+						list = controller.dfs();
+					}
 					break;
 				case PLACEENDINGSQUARE:
 					break;
@@ -281,13 +296,13 @@ public class Main extends Application {
 					}
 				}
 
-				if (r == controller.getSourceXCordinate() && c == controller.getSourceYCordinate()) {
+				if (c == controller.getSourceXCordinate() && r == controller.getSourceYCordinate()) {
 					controller.setSourceCordinates(-1, -1);
 				}
 
 				this.color = Color.RED;
 				border.setFill(this.color);
-				controller.setSinkCordinates(r, c);
+				controller.setSinkCordinates(c, r);
 				break;
 
 			case PLACESTARTSQUARE:
@@ -299,25 +314,25 @@ public class Main extends Application {
 					}
 				}
 
-				if (r == controller.getSinkXCordinate() && c == controller.getSinkYCordinate()) {
+				if (c == controller.getSinkXCordinate() && r == controller.getSinkYCordinate()) {
 					controller.setSinkCordinates(-1, -1);
 				}
 
 				this.color = Color.LIME;
 				border.setFill(this.color);
-				controller.setSourceCordinates(r, c);
+				controller.setSourceCordinates(c, r);
 
 				break;
 
 			case PLACEWALL:
-				if (r == controller.getSinkXCordinate() && c == controller.getSinkYCordinate()) {
+				if (c == controller.getSinkXCordinate() && r == controller.getSinkYCordinate()) {
 					controller.setSinkCordinates(-1, -1);
-				} else if (r == controller.getSourceXCordinate() && c == controller.getSourceYCordinate()) {
+				} else if (c == controller.getSourceXCordinate() && r == controller.getSourceYCordinate()) {
 					controller.setSourceCordinates(-1, -1);
 				}
 				this.color = Color.GRAY;
 				border.setFill(this.color);
-				controller.addWall(r, c);
+				controller.addWall(c, r);
 
 				break;
 
@@ -325,7 +340,7 @@ public class Main extends Application {
 				if (color == Color.GRAY) {
 					this.color = Color.WHITE;
 					border.setFill(this.color);
-					controller.removeWall(r, c);
+					controller.removeWall(c, r);
 				}
 				break;
 			default:

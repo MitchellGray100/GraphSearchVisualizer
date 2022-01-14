@@ -8,6 +8,10 @@ import model.Node;
 public class ControllerImpl {
 	private Graph graph = new Graph();
 
+	public boolean isReadyToSearch() {
+		return graph.isReadyToSearch();
+	}
+
 	public void addWall(int r, int c) {
 		graph.addWall(r, c);
 	}

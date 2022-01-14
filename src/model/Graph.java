@@ -1,6 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class Graph {
 
@@ -24,6 +27,13 @@ public class Graph {
 		}
 	}
 
+	public boolean isReadyToSearch() {
+		if (sourceStartRow != -1 && sourceStartColumn != -1 && sinkEndRow != -1 && sinkEndColumn != -1) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Sets the position at r,c to null (creates a wall).
 	 * 
@@ -31,7 +41,7 @@ public class Graph {
 	 * @param c The column position of the wall
 	 */
 	public void addWall(int r, int c) {
-		graph[r][c] = null;
+		graph[r][c] = new Node(r, c, true);
 	}
 
 	/**
@@ -53,10 +63,10 @@ public class Graph {
 	 * @return Whether or not the node is a valid node.
 	 */
 	public boolean checkEdge(int r, int c) {
-		if (r > rows || c > columns || r < 0 || c < 0)
+		if (r >= rows || c >= columns || r < 0 || c < 0)
 			return false;
 
-		if (graph[r][c] == null)
+		if (graph[r][c].isRock)
 			return false;
 
 		return true;
@@ -83,7 +93,7 @@ public class Graph {
 	public void generateEdges() {
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < columns; c++) {
-				if (graph[r][c] != null) {
+				if (!graph[r][c].isRock) {
 					safeAddEdge(r, c, r + 1, c);
 					safeAddEdge(r, c, r, c + 1);
 					safeAddEdge(r, c, r - 1, c);
@@ -174,8 +184,46 @@ public class Graph {
 	 * @return list The list of each node visit in order.
 	 */
 	public ArrayList<Node> bfs() {
+		Node s = graph[sourceStartRow][sourceStartColumn];
+		Node t = graph[sinkEndRow][sinkEndColumn];
 		ArrayList<Node> list = new ArrayList<Node>();
-		return list;
+		Node temp = s;
+		// Mark all the vertices as not visited(By default
+		// set as false)
+		HashSet<Node> visited = new HashSet<Node>();
+
+		// Create a queue for BFS
+		LinkedList<Node> queue = new LinkedList<Node>();
+
+		// Mark the current node as visited and enqueue it
+		visited.add(temp);
+		queue.add(temp);
+
+		while (queue.size() != 0) {
+			// Dequeue a vertex from queue and print it
+
+			temp = queue.poll();
+			if (temp.equals(t)) {
+				return list;
+			}
+			if (!temp.equals(s)) {
+				list.add(temp);
+			}
+			System.out.print(temp + " ");
+
+			// Get all adjacent vertices of the dequeued vertex s
+			// If a adjacent has not been visited, then mark it
+			// visited and enqueue it
+			Iterator<Node> i = temp.keySet();
+			while (i.hasNext()) {
+				Node n = i.next();
+				if (!visited.contains(n)) {
+					visited.add(n);
+					queue.add(n);
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

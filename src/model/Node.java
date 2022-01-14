@@ -7,6 +7,7 @@ public class Node {
 	HashSet<Node> edges = new HashSet<Node>();
 	int row = -1;
 	int column = -1;
+	boolean isRock = false;
 
 	/**
 	 * Constructor of a Node
@@ -17,6 +18,12 @@ public class Node {
 	public Node(int r, int c) {
 		row = r;
 		column = c;
+	}
+
+	public Node(int r, int c, boolean rock) {
+		row = r;
+		column = c;
+		isRock = rock;
 	}
 
 	/**
