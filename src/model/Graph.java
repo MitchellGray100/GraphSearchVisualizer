@@ -108,6 +108,17 @@ public class Graph {
 	}
 
 	/**
+	 * Replaces all nodes with new nodes.
+	 */
+	public void clear() {
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < columns; c++) {
+				graph[r][c] = new Node(r, c);
+			}
+		}
+	}
+
+	/**
 	 * Sets the coordinate of the source node to r,c
 	 * 
 	 * @param r row cord of source node.
@@ -117,8 +128,25 @@ public class Graph {
 		if (sourceStartRow != -1 && sourceStartColumn != -1) {
 			graph[sourceStartRow][sourceStartColumn] = new Node(sourceStartRow, sourceStartColumn);
 		}
+		graph[r][c] = new Node(r, c);// incase of wall
 		sourceStartRow = r;
 		sourceStartColumn = c;
+	}
+
+	public int getSourceXCordinate() {
+		return sourceStartRow;
+	}
+
+	public int getSourceYCordinate() {
+		return sourceStartColumn;
+	}
+
+	public int getSinkXCordinate() {
+		return sinkEndRow;
+	}
+
+	public int getSinkYCordinate() {
+		return sinkEndColumn;
 	}
 
 	/**
@@ -131,6 +159,7 @@ public class Graph {
 		if (sinkEndRow != -1 && sinkEndColumn != -1) {
 			graph[sinkEndRow][sinkEndColumn] = new Node(sinkEndRow, sinkEndColumn);
 		}
+		graph[r][c] = new Node(r, c);// incase of wall
 		sinkEndRow = r;
 		sinkEndColumn = c;
 	}
@@ -163,5 +192,13 @@ public class Graph {
 	public ArrayList<Node> aStar() {
 		ArrayList<Node> list = new ArrayList<Node>();
 		return list;
+	}
+
+	public int getRowSize() {
+		return rows;
+	}
+
+	public int getColumnSize() {
+		return columns;
 	}
 }

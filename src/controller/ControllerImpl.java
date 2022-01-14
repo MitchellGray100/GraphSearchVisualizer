@@ -24,6 +24,10 @@ public class ControllerImpl {
 		graph.clearEdges();
 	}
 
+	public void clear() {
+		graph.clear();
+	}
+
 	public void setSourceCordinates(int r, int c) {
 		graph.setSourceCordinates(r, c);
 	}
@@ -45,4 +49,28 @@ public class ControllerImpl {
 		return graph.aStar();
 	}
 
+	public int getRowSize() {
+		return graph.getRowSize();
+
+	}
+
+	public int getColumnSize() {
+		return graph.getColumnSize();
+	}
+
+	public int getSourceXCordinate() {
+		return graph.getSourceXCordinate();
+	}
+
+	public int getSourceYCordinate() {
+		return graph.getSourceYCordinate();
+	}
+
+	public int getSinkXCordinate() {
+		return graph.getSinkXCordinate();
+	}
+
+	public int getSinkYCordinate() {
+		return graph.getSinkYCordinate();
+	}
 }

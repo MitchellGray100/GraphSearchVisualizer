@@ -1,1 +1,64 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.toolButton{
+	-fx-text-fill: black;
+	-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
+	-fx-font-size: 32;
+	-fx-font-style: normal;
+	-fx-font-weight: bold;
+	-fx-font-family: sans-serif;
+	-fx-background-radius: 30;
+}
+
+.root{
+	-fx-background-color: lightgray;
+}
+
+
+.runnableToolButton{
+	-fx-background-color: linear-gradient(#f9f99a, #f5f261);
+}
+
+.selectedButton{
+	-fx-effect: dropshadow( one-pass-box , black , 40 , 0.0 , 2 , 0 );
+}
+#placeWall{
+	-fx-background-color:
+	linear-gradient(#bababa, #7d7d7d);
+}
+
+#removeWall{
+	-fx-background-color:
+	linear-gradient(#f5f5f5, #cfcfcf);
+}
+
+#placeStarting{
+	-fx-background-color:linear-gradient(#bcf9a4,#60f122 );
+	
+}
+
+#placeEnding{
+	-fx-background-color: linear-gradient(#f77e7e, #f12222);
+
+}
+
+#bfs{
+
+}
+
+#dfs{
+
+}
+
+#aStar{
+
+}
+
+#clearGrid{
+	-fx-focus-color: black;
+	-fx-text-fill: black;
+	-fx-effect: none;
+	-fx-font-size: 32;
+	-fx-font-style: normal;
+	-fx-font-weight: bold;
+	-fx-font-family: sans-serif;
+}
