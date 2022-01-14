@@ -43,7 +43,6 @@ public class Main extends Application {
 		// constants
 		final int width = 1920;
 		final int height = 1080;
-
 		// nodes to put into root
 		for (int r = 0; r < controller.getRowSize(); r++) {
 			for (int c = 0; c < controller.getColumnSize(); c++) {
@@ -219,6 +218,7 @@ public class Main extends Application {
 
 				}
 			});
+
 		}
 	}
 
@@ -247,79 +247,92 @@ public class Main extends Application {
 			this.setOnMouseEntered(event -> {
 				tempCursor = scene.getCursor();
 				scene.setCursor(Cursor.CROSSHAIR);
+				if (event.isShiftDown()) {
+					System.out.println("Hello");
+					drawTile();
+				}
+
 			});
+
 			this.setOnMouseExited(event -> {
 				scene.setCursor(tempCursor);
 			});
 
 			setOnMouseReleased(event -> {
-				switch (state) {
-				case ASTAR:
-					break;
-				case BFS:
-					break;
-				case CLEARGRID:
-					break;
-				case DFS:
-					break;
-				case PLACEENDINGSQUARE:
-					for (Node tile : largeGrid.getChildren()) {
-						if (((Tile) tile).color == Color.RED) {
-							((Tile) tile).color = Color.WHITE;
-							((Tile) tile).border.setFill(Color.WHITE);
-						}
+				drawTile();
+			});
+		}
+
+		private void drawTile() {
+			switch (state) {
+			case ASTAR:
+				break;
+			case BFS:
+				break;
+			case CLEARGRID:
+				break;
+			case DFS:
+				break;
+			case PLACEENDINGSQUARE:
+				for (Node tile : largeGrid.getChildren()) {
+					if (((Tile) tile).color == Color.RED) {
+						((Tile) tile).color = Color.WHITE;
+						((Tile) tile).border.setFill(Color.WHITE);
 					}
+				}
 
-					if (r == controller.getSourceXCordinate() && c == controller.getSourceYCordinate()) {
-						controller.setSourceCordinates(-1, -1);
+				if (r == controller.getSourceXCordinate() && c == controller.getSourceYCordinate()) {
+					controller.setSourceCordinates(-1, -1);
+				}
+
+				this.color = Color.RED;
+				border.setFill(this.color);
+				controller.setSinkCordinates(r, c);
+				break;
+
+			case PLACESTARTSQUARE:
+				for (Node tile : largeGrid.getChildren()) {
+
+					if (((Tile) tile).color.equals(Color.LIME)) {
+						((Tile) tile).color = Color.WHITE;
+						((Tile) tile).border.setFill(Color.WHITE);
 					}
+				}
 
-					this.color = Color.RED;
-					border.setFill(this.color);
-					controller.setSinkCordinates(r, c);
-					break;
+				if (r == controller.getSinkXCordinate() && c == controller.getSinkYCordinate()) {
+					controller.setSinkCordinates(-1, -1);
+				}
 
-				case PLACESTARTSQUARE:
-					for (Node tile : largeGrid.getChildren()) {
+				this.color = Color.LIME;
+				border.setFill(this.color);
+				controller.setSourceCordinates(r, c);
 
-						if (((Tile) tile).color.equals(Color.LIME)) {
-							((Tile) tile).color = Color.WHITE;
-							((Tile) tile).border.setFill(Color.WHITE);
-						}
-					}
+				break;
 
-					if (r == controller.getSinkXCordinate() && c == controller.getSinkYCordinate()) {
-						controller.setSinkCordinates(-1, -1);
-					}
+			case PLACEWALL:
+				if (r == controller.getSinkXCordinate() && c == controller.getSinkYCordinate()) {
+					controller.setSinkCordinates(-1, -1);
+				} else if (r == controller.getSourceXCordinate() && c == controller.getSourceYCordinate()) {
+					controller.setSourceCordinates(-1, -1);
+				}
+				this.color = Color.GRAY;
+				border.setFill(this.color);
+				controller.addWall(r, c);
 
-					this.color = Color.LIME;
-					border.setFill(this.color);
-					controller.setSourceCordinates(r, c);
+				break;
 
-					break;
-
-				case PLACEWALL:
-					if (r == controller.getSinkXCordinate() && c == controller.getSinkYCordinate()) {
-						controller.setSinkCordinates(-1, -1);
-					} else if (r == controller.getSourceXCordinate() && c == controller.getSourceYCordinate()) {
-						controller.setSourceCordinates(-1, -1);
-					}
-					this.color = Color.GRAY;
-					border.setFill(this.color);
-					controller.addWall(r, c);
-
-					break;
-
-				case REMOVEWALL:
+			case REMOVEWALL:
+				if (color == Color.GRAY) {
 					this.color = Color.WHITE;
 					border.setFill(this.color);
 					controller.removeWall(r, c);
-					break;
-				default:
-					break;
-
 				}
-			});
+				break;
+			default:
+				break;
+
+			}
+
 		}
 	}
 

@@ -128,7 +128,9 @@ public class Graph {
 		if (sourceStartRow != -1 && sourceStartColumn != -1) {
 			graph[sourceStartRow][sourceStartColumn] = new Node(sourceStartRow, sourceStartColumn);
 		}
-		graph[r][c] = new Node(r, c);// incase of wall
+		if (r != -1 && c != -1)
+			graph[r][c] = new Node(r, c);// incase of wall
+
 		sourceStartRow = r;
 		sourceStartColumn = c;
 	}
@@ -159,7 +161,9 @@ public class Graph {
 		if (sinkEndRow != -1 && sinkEndColumn != -1) {
 			graph[sinkEndRow][sinkEndColumn] = new Node(sinkEndRow, sinkEndColumn);
 		}
-		graph[r][c] = new Node(r, c);// incase of wall
+		if (r != -1 && c != -1)
+			graph[r][c] = new Node(r, c);// incase of wall
+
 		sinkEndRow = r;
 		sinkEndColumn = c;
 	}
