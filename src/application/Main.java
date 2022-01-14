@@ -271,7 +271,7 @@ public class Main extends Application {
 				tempCursor = scene.getCursor();
 				scene.setCursor(Cursor.CROSSHAIR);
 				if (event.isShiftDown()) {
-					System.out.println("Hello");
+//					System.out.println("Hello");
 					drawTile();
 				}
 
@@ -388,7 +388,7 @@ public class Main extends Application {
 
 		time += 0.01 * speed;
 
-		System.out.println(time);
+//		System.out.println(time);
 		if (time >= 1) {
 			time = 0;
 			if (list.size() != 0)
@@ -398,7 +398,7 @@ public class Main extends Application {
 
 	private void colorOneSquare() {
 
-		System.out.println(3);
+//		System.out.println(3);
 		for (Node tile : largeGrid.getChildren()) {
 			if (((Tile) tile).r == list.get(0).getColumn() && ((Tile) tile).c == list.get(0).getRow()) {
 				((Tile) tile).color = Color.PURPLE;
