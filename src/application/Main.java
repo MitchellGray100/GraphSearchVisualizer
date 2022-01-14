@@ -7,6 +7,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -411,16 +412,48 @@ public class Main extends Application {
 	}
 
 	private void changeColors() {
+
+		ObservableList<Node> temp = largeGrid.getChildren();
 		for (Node tile : largeGrid.getChildren()) {
-			if (((Tile) tile).r == list.get(0).getColumn() && ((Tile) tile).c == list.get(0).getRow()) {
-				((Tile) tile).color = Color.PURPLE;
-				((Tile) tile).border.setFill(Color.PURPLE);
-				list.remove(0);
-				changeColors();
+			if (list.size() == 0) {
 				break;
 			}
+
+			if (((Tile) tile).color == Color.PURPLE) {
+				if (isBlack(temp, ((Tile) tile).r, ((Tile) tile).c)) {
+					((Tile) tile).color = Color.PINK;
+					((Tile) tile).border.setFill(Color.PINK);
+				}
+			}
+
 		}
 
+	}
+
+	private boolean isBlackHelper(ObservableList<Node> temp, int r, int c) {
+		if (r < 0 || r >= controller.getRowSize() || c < 0 || c >= controller.getColumnSize()) {
+			return true;
+		}
+
+		Tile tile = ((Tile) (temp.get(r * 20 + c)));
+
+		if (tile.color == Color.GRAY || tile.color == Color.LIME || tile.color == Color.RED
+				|| tile.color == Color.PURPLE || tile.color == Color.PINK) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isBlack(ObservableList<Node> temp, int r, int c) {
+		boolean top = isBlackHelper(temp, r - 1, c);
+		boolean bottom = isBlackHelper(temp, r + 1, c);
+		boolean left = isBlackHelper(temp, r, c - 1);
+		boolean right = isBlackHelper(temp, r, c + 1);
+//		+ bottom + left + right);
+		if (top && bottom && left && right) {
+			return true;
+		}
+		return false;
 	}
 
 	private void removeColors() {
