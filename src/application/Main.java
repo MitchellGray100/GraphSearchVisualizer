@@ -385,6 +385,7 @@ public class Main extends Application {
 				if (stop || list.size() == 0) {
 					stop = false;
 					stop();
+					changeColors();
 				}
 
 			}
@@ -427,10 +428,8 @@ public class Main extends Application {
 	private void changeColors() {
 
 		ObservableList<Node> temp = largeGrid.getChildren();
+
 		for (Node tile : largeGrid.getChildren()) {
-			if (list.size() == 0) {
-				break;
-			}
 
 			if (((Tile) tile).color == Color.PURPLE) {
 				if (isBlack(temp, ((Tile) tile).r, ((Tile) tile).c)) {
