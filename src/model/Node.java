@@ -1,10 +1,10 @@
 package model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Node {
-	HashSet<Node> edges = new HashSet<Node>();
+	ArrayList<Node> edges = new ArrayList<Node>();
 	int row = -1;
 
 	public int getRow() {

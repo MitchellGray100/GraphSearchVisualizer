@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Graph {
-
+	private boolean stop = false;
 	private final int rows = 20;
 	private final int columns = 20;
 	private int sourceStartRow = -1;
@@ -209,7 +209,7 @@ public class Graph {
 			if (!temp.equals(s)) {
 				list.add(temp);
 			}
-			System.out.print(temp + " ");
+//			System.out.print(temp + " ");
 
 			// Get all adjacent vertices of the dequeued vertex s
 			// If a adjacent has not been visited, then mark it
@@ -226,13 +226,58 @@ public class Graph {
 		return null;
 	}
 
+	void DFSUtil(Node s, Node t, HashSet<Node> visited, ArrayList<Node> list, Node source) {
+
+		if (!stop) {
+			// Mark the current node as visited and print it
+			visited.add(s);
+			if (s.equals(t)) {
+				stop = true;
+				return;
+			}
+			if (!s.equals(source)) {
+				list.add(s);
+			}
+
+//		System.out.print(s + " ");
+
+			// Recur for all the vertices adjacent to this
+			// vertex
+			Iterator<Node> i = s.keySet();
+			while (i.hasNext()) {
+				Node n = i.next();
+				if (!visited.contains(n))
+					DFSUtil(n, t, visited, list, source);
+			}
+		}
+	}
+
 	/**
 	 * Calculates the dfs route from the source to sink.
 	 * 
 	 * @return list The list of each node visit in order.
 	 */
 	public ArrayList<Node> dfs() {
+		Node s = graph[sourceStartRow][sourceStartColumn];
+		Node t = graph[sinkEndRow][sinkEndColumn];
 		ArrayList<Node> list = new ArrayList<Node>();
+
+		// The function to do DFS traversal.
+		// It uses recursive
+		// DFSUtil()
+		// Mark all the vertices as
+		// not visited(set as
+		// false by default in java)
+		HashSet<Node> visited = new HashSet<Node>();
+
+		// Call the recursive helper
+		// function to print DFS
+		// traversal
+		DFSUtil(s, t, visited, list, s);
+		if (!stop) {
+			return null;
+		}
+		stop = false;
 		return list;
 	}
 

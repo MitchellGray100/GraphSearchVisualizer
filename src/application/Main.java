@@ -34,13 +34,14 @@ public class Main extends Application {
 	private Cursor tempCursor;
 	private Button[] buttonArray = new Button[8];
 	private Scene scene;
-	private int speed = 0;
+	private int speed = 50;
 	private State state = State.CLEARGRID;
 	private GridPane largeGrid = new GridPane();
 	private ArrayList<model.Node> list = new ArrayList<model.Node>();
 	private AnimationTimer animationTimer;
 	private double time = 0;
 	private boolean stop = false;
+	private Text sideText;
 
 	private enum State {
 		CLEARGRID, PLACESTARTSQUARE, PLACEENDINGSQUARE, PLACEWALL, REMOVEWALL, BFS, DFS, ASTAR;
@@ -88,7 +89,8 @@ public class Main extends Application {
 		buttonArray[7] = aStar;
 		buttons.getChildren().addAll(clearGrid, placeStartingNode, placeEndingNode, placeWall, removeWall, bfs, dfs,
 				aStar);
-		Text text = new Text();
+		sideText = new Text();
+		sideText.setFont(new Font(32));
 //		text.setText("test");
 		VBox bottom = new VBox();
 
@@ -102,7 +104,8 @@ public class Main extends Application {
 		});
 		slide.setShowTickLabels(true);
 		slide.setShowTickMarks(true);
-		slide.setBlockIncrement(5);
+		slide.setBlockIncrement(1);
+		slide.adjustValue(50);
 		Text bottomText = new Text();
 		bottomText.setText("Speed: " + speed);
 		bottomText.setFont(new Font(32));
@@ -120,7 +123,7 @@ public class Main extends Application {
 		root.getStyleClass().add("root");
 		root.setTop(buttons);
 		root.setCenter(largeGrid);
-		root.setLeft(text);
+		root.setLeft(sideText);
 		root.setBottom(bottom);
 
 		// Scaling
@@ -201,33 +204,43 @@ public class Main extends Application {
 			});
 
 			this.setOnMouseReleased(event -> {
+				if (animationTimer != null)
+					animationTimer.stop();
+				removeColors();
 				setButtonStates(this);
 				switch (state) {
 				case ASTAR:
-					if (controller.isReadyToSearch()) {
-						controller.generateEdges();
-						list = controller.aStar();
-						animate(State.ASTAR);
-					}
-					break;
 				case BFS:
+				case DFS:
+
+					removeColors();
 					if (controller.isReadyToSearch()) {
+						controller.clearEdges();
 						controller.generateEdges();
-						list = controller.bfs();
-						animate(State.BFS);
+						if (state == State.ASTAR) {
+							list = controller.aStar();
+						} else if (state == State.BFS) {
+
+							list = controller.bfs();
+						} else if (state == State.DFS) {
+							list = controller.dfs();
+						}
+						if (list != null) {
+							animate(state);
+							sideText.setText("");
+						} else
+							sideText.setText("No Path Found");
+					} else {
+						sideText.setText("Make sure there is a start and end square");
 					}
 					break;
 				case CLEARGRID:
 					controller.clear();
+					controller.setSourceCordinates(-1, -1);
+					controller.setSinkCordinates(-1, -1);
 					clearGrid(largeGrid);
 					break;
-				case DFS:
-					if (controller.isReadyToSearch()) {
-						controller.generateEdges();
-						list = controller.dfs();
-						animate(State.DFS);
-					}
-					break;
+
 				case PLACEENDINGSQUARE:
 					break;
 				case PLACESTARTSQUARE:
