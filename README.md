@@ -5,7 +5,7 @@ https://github.com/MitchellGray100/GraphSearchVisualizer
 
 JavaFX Graph Traversal Visualizer
 
-Visual graph that can be interacted with. Place a start square, end square, possibly some walls, and then choose a traversal to run. The traversal will be shown on the graph step by step. The speed of this traversal can be changed at the bottom with the slider bar. Walls can be placed & removed one by one by clicking with the mouse or they can be placed & removed with SHIFT. Clear the whole graph with the "Clear Grid" button. Make sure there is a valid path from the start to the end.
+Visual graph that can be interacted with. Place a start square, end square, possibly some walls, and then choose a traversal to run. The traversal will be shown on the graph step by step. The speed of this traversal can be changed at the bottom with the slider bar. Walls can be placed & removed one by one by clicking with the mouse or they can be mass placed & removed with SHIFT. Clear the whole graph with the "Clear Grid" button. Make sure there is a valid path from the start to the end.
 
 
 ___
