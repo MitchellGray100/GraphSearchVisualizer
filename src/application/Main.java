@@ -91,6 +91,7 @@ public class Main extends Application {
 				aStar);
 		sideText = new Text();
 		sideText.setFont(new Font(32));
+		sideText.prefWidth(100);
 //		text.setText("test");
 		VBox bottom = new VBox();
 
@@ -447,7 +448,7 @@ public class Main extends Application {
 			return true;
 		}
 
-		Tile tile = ((Tile) (temp.get(r * 20 + c)));
+		Tile tile = ((Tile) (temp.get(r * controller.getRowSize() + c)));
 
 		if (tile.color == Color.GRAY || tile.color == Color.LIME || tile.color == Color.RED
 				|| tile.color == Color.PURPLE || tile.color == Color.PINK) {

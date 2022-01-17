@@ -3,9 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Node {
+public class Node implements Comparable<Node> {
 	ArrayList<Node> edges = new ArrayList<Node>();
 	int row = -1;
+	int estimatedDistance = 0;
 
 	public int getRow() {
 		return row;
@@ -75,5 +76,24 @@ public class Node {
 	 */
 	public Iterator<Node> keySet() {
 		return edges.iterator();
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		if (estimatedDistance > o.estimatedDistance) {
+			return 1;
+		} else if (estimatedDistance == o.estimatedDistance) {
+			return 0;
+		} else {
+			return -1;
+		}
+	}
+
+	public int getEstimatedDistance() {
+		return estimatedDistance;
+	}
+
+	public void setEstimatedDistance(int estimatedDistance) {
+		this.estimatedDistance = estimatedDistance;
 	}
 }

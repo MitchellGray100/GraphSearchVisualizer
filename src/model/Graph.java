@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Graph {
 	private boolean stop = false;
@@ -287,8 +289,42 @@ public class Graph {
 	 * @return list The list of each node visit in order.
 	 */
 	public ArrayList<Node> aStar() {
+		Queue<Node> openSet = new PriorityQueue<Node>();
 		ArrayList<Node> list = new ArrayList<Node>();
-		return list;
+		HashSet<Node> visited = new HashSet<Node>();
+
+		Node s = graph[sourceStartRow][sourceStartColumn];
+		Node t = graph[sinkEndRow][sinkEndColumn];
+
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < columns; c++) {
+				graph[r][c].estimatedDistance = Math.abs(graph[r][c].row - t.row)
+						+ Math.abs(graph[r][c].column - t.column);
+			}
+		}
+		openSet.add(s);
+		while (!openSet.isEmpty()) {
+			Node next = openSet.poll();
+
+			if (next.equals(t)) {
+				return list;
+			}
+			Iterator<Node> i = next.keySet();
+			while (i.hasNext()) {
+				Node n = i.next();
+				if (!visited.contains(n)) {
+					if (n != null) {
+						visited.add(n);
+						openSet.add(n);
+					}
+				}
+			}
+			if (!next.equals(s))
+				list.add(next);
+
+		}
+
+		return null;
 	}
 
 	public int getRowSize() {
