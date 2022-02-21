@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class Node implements Comparable<Node> {
 	ArrayList<Node> edges = new ArrayList<Node>();
 	int row = -1;
-	int estimatedDistance = 0;
+	double estimatedDistance = 0;
 
 	public int getRow() {
 		return row;
@@ -89,11 +89,11 @@ public class Node implements Comparable<Node> {
 		}
 	}
 
-	public int getEstimatedDistance() {
+	public double getEstimatedDistance() {
 		return estimatedDistance;
 	}
 
-	public void setEstimatedDistance(int estimatedDistance) {
+	public void setEstimatedDistance(double estimatedDistance) {
 		this.estimatedDistance = estimatedDistance;
 	}
 }

@@ -134,7 +134,7 @@ public class Main extends Application {
 		root.getTransforms().add(scale);
 
 		// display
-		scene = new Scene(root, 1920, 1080);
+		scene = new Scene(root, width, height);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setResizable(true);
 		primaryStage.setScene(scene);

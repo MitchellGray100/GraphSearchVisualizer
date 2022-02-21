@@ -298,8 +298,8 @@ public class Graph {
 
 		for (int r = 0; r < rows; r++) {
 			for (int c = 0; c < columns; c++) {
-				graph[r][c].estimatedDistance = Math.abs(graph[r][c].row - t.row)
-						+ Math.abs(graph[r][c].column - t.column);
+				graph[r][c].estimatedDistance = Math
+						.sqrt(Math.pow(t.row - graph[r][c].row, 2) + Math.pow(t.column - graph[r][c].column, 2));
 			}
 		}
 		openSet.add(s);
@@ -314,6 +314,7 @@ public class Graph {
 				Node n = i.next();
 				if (!visited.contains(n)) {
 					if (n != null) {
+						n.setEstimatedDistance(n.getEstimatedDistance() + next.estimatedDistance);
 						visited.add(n);
 						openSet.add(n);
 					}
